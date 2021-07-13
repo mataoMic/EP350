@@ -4,11 +4,11 @@ const app = getApp()
 
 Page({
   data: {
-
     devices: [],
   },
   async onLoad() {
     bluetoothService.on(BLUETOOTH_EVENT.DEVICE_FOUND, this.bluetoothDeviceFound);
+    bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.bluetoothNewData);
     await bluetoothService.startDiscovery().catch(err => {
       console.error(err);
     });
@@ -16,7 +16,8 @@ Page({
   async onUnload() {
     bluetoothService.off(BLUETOOTH_EVENT.DEVICE_FOUND, this.bluetoothDeviceFound);
     bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.bluetoothNewData);
-    bluetoothService.stopDiscovery().catch(console.error);
+    await bluetoothService.stopDiscovery().catch(console.error);
+    await bluetoothService.disconnect();
   },
   bluetoothDeviceFound(res) {
     console.log(res);

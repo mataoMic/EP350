@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "events": "^3.3.0",
-    "lodash.differenceby": "^4.8.0"
+    "events": "^3.3.0"
   }
 }
