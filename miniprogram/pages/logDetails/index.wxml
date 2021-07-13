@@ -1,0 +1,104 @@
+<!--pages/logDetails/index.wxml-->
+<view>
+  <van-cell title="{{ _t['信息'] }}" value="">
+  <view slot="">
+    <van-icon size="20" name="photo-o" bindtap="openImg"/>
+  </view>
+</van-cell>
+  <van-cell title="{{ _t['综合状态'] }}">
+    <view slot="">
+      <van-tag type="success">{{ _t['通过'] }}√</van-tag>
+      <van-tag type="danger">{{ _t['未通过'] }}X</van-tag>
+    </view>
+  </van-cell>
+  <van-cell title="{{ _t['标识'] }}" title-width="200" value=" " label="A-EP00018"  is-link />
+</view>
+<view>
+  <h2 class="titleFont">GPON({{ _t['活动'] }})</h2>
+  <van-cell-group>
+    <van-cell title-width="150">
+      <view center slot="title" style="height:100%;display:flex;justify-content: center;align-items: center;">
+        <view>
+          <view class="van-cell-text">↑ {{ _t['上行功率'] }}</view>
+          <van-tag type="success">√</van-tag><text class="rateFont">   -15.38 dBm</text>
+        </view>
+      </view>
+      <view sort="">
+        <van-cell title="">
+          <view sort="">
+            <text class="limitFont">{{ _t['最大值'] }} 4.00 dBm</text>
+          </view>
+          <view sort="">
+            <text class="limitFont">{{ _t['最小值'] }} -20.0 dBm</text>
+          </view>
+        </van-cell>
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <van-cell-group>
+    <van-cell title-width="150" icon="back-down">
+      <view center slot="title" style="height:100%;display:flex;justify-content: center;align-items: center;">
+        <view>
+          <view class="van-cell-text">↓ {{ _t['下行功率'] }}</view>
+          <van-tag type="success">√</van-tag><text class="rateFont">   -10.06 dBm</text>
+        </view>
+      </view>
+      <view sort="">
+        <van-cell>
+          <view sort="">
+            <text class="limitFont">{{ _t['最大值'] }} 4.00 dBm</text>
+          </view>
+          <view sort="">
+            <text class="limitFont">{{ _t['最小值'] }} -20.0 dBm</text>
+          </view>
+        </van-cell>
+      </view>
+    </van-cell>
+  </van-cell-group>
+</view>
+<view>
+  <h2 class="titleFont">XGS-PON({{ _t['活动'] }})</h2>
+  <van-cell-group>
+    <van-cell title-width="150">
+      <view center slot="title" style="height:100%;display:flex;justify-content: center;align-items: center;">
+        <view>
+          <view class="van-cell-text">↑ {{ _t['上行功率'] }}</view>
+          <van-tag type="danger">x</van-tag><text class="rateFont">---LOW---</text>
+        </view>
+      </view>
+      <view sort="">
+        <van-cell>
+          <view sort="">
+            <text class="limitFont">{{ _t['最大值'] }} 4.00 dBm</text>
+          </view>
+          <view sort="">
+            <text class="limitFont">{{ _t['最小值'] }} -20.0 dBm</text>
+          </view>
+        </van-cell>
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <van-cell-group>
+    <van-cell title-width="150">
+      <view center slot="title" style="height:100%;display:flex;justify-content: center;align-items: center;">
+        <view>
+          <view class="van-cell-text">↓ {{ _t['下行功率'] }}</view>
+          <van-tag type="danger">x</van-tag><text class="rateFont">---LOW---</text>
+        </view>
+      </view>
+      <view sort="">
+        <van-cell>
+          <view sort="">
+            <text class="limitFont">{{ _t['最大值'] }} 4.00 dBm</text>
+          </view>
+          <view sort="">
+            <text class="limitFont">{{ _t['最小值'] }} -20.0 dBm</text>
+          </view>
+        </van-cell>
+      </view>
+    </van-cell>
+    <v-button>{{ _t['生成报告'] }}</v-button>
+  </van-cell-group>
+</view>
+
+

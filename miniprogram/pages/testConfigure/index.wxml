@@ -1,0 +1,11 @@
+<!--pages/testConfigure/index.wxml-->
+<van-divider contentPosition="left">{{ _t['服务配置'] }}</van-divider>
+<van-cell-group>
+  <van-cell title="2 services" icon="location-o" label="GPON+XGS-PON" bindtap="checkDetails" is-link/>
+  <van-cell title="2 services" icon="location-o" label="GPON+NG-PON2" bindtap="checkDetails" is-link/>
+  <van-cell title="EPON services" icon="location-o" label="1G+10G:1G+10G" bindtap="checkDetails" is-link/>
+  <van-cell title="2 services" icon="location-o" label="GPON+ALT+PON" bindtap="checkDetails" is-link/>
+  <van-cell title="2 services" icon="location-o" label="GPON+RFoG" bindtap="checkDetails" is-link/>
+  <van-cell title="1 service" icon="location-o" label="GPON" bindtap="checkDetails" is-link/>
+</van-cell-group>
+  

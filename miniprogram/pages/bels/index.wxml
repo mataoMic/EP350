@@ -1,0 +1,71 @@
+<!-- 这是自定义组件的内部WXML结构 -->
+<view class="inner">
+  <button type="primary" class="button" bindtap="searchBEL">{{_t['搜索蓝牙']}}</button>
+  <van-notify id="van-notify" />
+  <van-toast id="van-toast" />
+ <!-- 
+<button type="primary" class="button" bindtap="initializeBEL">1初始化蓝牙</button>
+ <button type="primary" class="button" bindtap="getBELstatue">2获取蓝牙状态</button>
+ <button type="primary" class="button" bindtap="searchBEL">3搜索周边设备</button>
+ <button type="primary" class="button" bindtap="getDeviceInfo">4获取所有设备</button> 
+--> 
+ <!-- <block wx:for="{{devices}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+   <button type="primary" class="button" id="{{item.deviceId}}" style='background-color:red' bindtap="BELConnect">5连接{{item.name}}</button>
+ </block> -->
+ <block>
+  <van-empty wx:if="{{ devices.length == 0 }}" description="{{ _t['附近无匹配设备'] }}" />
+  <van-overlay show="{{ show }}" bind:click="onClickHide">
+    <view class="wrapper">
+      <view class="block" catch:tap="noop">
+        {{ noticeMsg }}
+      </view>
+    </view>
+  </van-overlay>
+  <van-cell-group>
+    <van-cell wx:for="{{devices}}" wx:for-index="index" wx:for-item="item" wx:key="index" title-width="50"	 title="{{'No.'+(index+1)}}">
+      <view slot="">
+        <view class="connectBox">
+          <view style="margin-left:10px;">{{item.name}}</view>
+          <view style="margin-left:10px;">{{item.deviceId}}</view>
+          <view style="margin-left:10px;" class="{{item.isConnect?'connection':'unconnection'}}">{{item.isConnect?_t['已连接']:_t['未连接']}}</view>
+          <van-button wx:if="{{ !item.isConnect }}" id="{{item.deviceId}}" data-index="{{index}}" style="margin-left:auto;" type="success"  bindtap="connect">{{ _t['连接'] }}</van-button>
+        </view>
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <!-- <view class="bus-list js_bus_list" wx:for="{{devices}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+    <view data-supplierid="100020" data-key="" class="bus-list-item">
+      <view class="bus-time"> No.{{index+1}}</view>
+      <view class="tobooking" id="{{item.deviceId}}" data-index="{{index}}" bindtap="connect"> 连接 </view>
+      <view class="detail">
+        <view class="detail1">
+          <view class="start">
+            <text class="icon-circle s-icon1"></text>{{item.name}}</view>
+          <view class="end">
+            <text class="icon-circle s-icon2"></text>deviceId:{{item.deviceId}}</view>
+        </view>
+        <view class="tags">
+          <view>
+            <text class="price">{{item.RSSI}}</text>
+          </view>
+          <view>
+            <text class="countleft" class="{{item.isConnect?'connection':'unconnection'}}">{{item.isConnect?'已连接':'未连接'}}</text>
+          </view>
+          <view>
+            <text class="b-tags js_tags"></text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view> -->
+ </block>
+ <!-- <button type="primary" class="button" bindtap="stopSearch">6停止搜索周边蓝牙设备</button>
+ <button type="primary" class="button" bindtap="getServices">7获取所有service</button>
+ <button type="primary" class="button" bindtap="getCharacteristics">8获取所有特征值</button>
+ <button type="primary" class="button" bindtap="listenNotify">9启用特征值变化notify</button>
+ <button type="primary" class="button" bindtap="acceptMessage">10接收蓝牙返回消息</button> -->
+ <view wx:if="{{ devices.length>0 }}" id="box" class="clearfix">
+  <input id="inp" placeholder='请输入要发送的信息' bindinput='getmsg'/>
+  <button id="btn" bindtap="sendMessage">发送</button>
+ </view>
+</view>

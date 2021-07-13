@@ -1,0 +1,44 @@
+<!--miniprogram/pages/setting/index.wxml-->
+<view>
+  <van-cell title="{{ _t['蓝牙功能'] }}" icon="shop-o">
+    <view slot=""> 
+      <van-switch  data-id='blue' checked="{{ blue}}" bind:change="onChange" />
+    </view>
+  </van-cell>
+  <van-cell title="ONT CW" icon="shop-o">
+    <view slot=""> 
+      <van-switch  data-id='ont' checked="{{ ont }}" bind:change="onChange" />
+    </view>
+  </van-cell>
+  <van-cell title="VFL" icon="shop-o">
+    <view slot=""> 
+      <van-switch data-id='vfl' checked="{{ vfl }}" bind:change="onChange" />
+    </view>
+  </van-cell>
+  <van-cell title="{{ _t['自动关机'] }}" icon="shop-o">
+    <view slot=""> 
+      <van-radio-group
+        value="{{ radio }}"
+        bind:change="onTime"
+      >
+        <van-radio name="1">{{ _t['从不'] }}</van-radio>
+        <van-radio name="2">5 min</van-radio>
+        <van-radio name="3">10 min</van-radio>
+        <van-radio name="4">30 min</van-radio>
+      </van-radio-group>
+    </view>
+  </van-cell>
+  <van-cell title="{{ _t['设置时间'] }}" is-link bind:click="showPopup" />
+</view>
+<van-popup class="overlay80vh" show="{{ show }}" bind:close="onClose" position="bottom">
+  <van-datetime-picker
+    type="datetime"
+    value="{{ currentDate }}"
+    min-date="{{ minDate }}"
+    max-date="{{ maxDate }}"
+    bind:input="onInput"
+    bind:confirm="confirm"
+    confirm-button-text="{{ _t['确认'] }}"
+    cancel-button-text="{{ _t['取消'] }}"
+  />
+</van-popup>

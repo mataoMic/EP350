@@ -1,0 +1,40 @@
+<!--logs.wxml-->
+<van-cell class="value-class" center>
+  <view slot="icon">
+    <van-circle
+      value="{{ 50 }}"
+      color="#07c160"
+      stroke-width="6"
+      clockwise="{{ false }}"
+    >
+      <view sort="">
+       <view>
+        {{ _t['通过率'] }}
+       </view>
+        5/10
+      </view>
+    </van-circle>
+  </view>
+  <view slot="">
+    <van-button type="primary" size="small" block>5{{ _t['通过'] }}</van-button>
+    <van-button type="danger" size="small" block>5{{ _t['未通过'] }}</van-button>
+    <van-button type="default" size="small" block>0{{ _t['无状态'] }}</van-button>
+  </view>
+</van-cell>
+<view>
+  <van-empty wx:if="{{ logs.length == 0 }}" description="{{ _t['无记录'] }}" />
+  <van-cell title-width="50" wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log"  bindtap="checkDetails" is-link>
+    <van-icon slot="icon" name="{{index%2===0?'cross':'success'}}" color="{{index%2===0?'red':'green'}}" />
+    <view slot="" style="text-align:center">
+      <view>A-EP0000{{ index }}</view>
+      {{log.date}}
+    </view>
+    <!-- <view slot="title">
+      <view class="van-cell-text">成功</view>
+      <van-tag type="danger">标签</van-tag>
+    </view> -->
+  </van-cell>
+  <!-- <block wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log">
+    <text class="log-item" bindtap="checkDetails">{{index + 1}}. {{log.date}}</text>
+  </block> -->
+</view>

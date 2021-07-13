@@ -1,0 +1,132 @@
+
+<!--pages/lanyatest/lanyatest.wxml-->
+<image
+    bindtap="switchLanguage"
+    class="vant-icon"
+      style="width:26px;height:26px;"
+      src="../../dist/images/{{language === 'English'?'english':'chinese'}}.png"
+    />
+<van-grid column-num="2">
+  <van-grid-item data-url="bels" bindtap="toRoute" use-slot>
+    <image
+    class="vant-icon"
+      style="width:26px;height:26px;"
+      src="../../dist/images/lanya.png"
+    />
+    <view class="gridTextBox">
+      <text>{{ _t['蓝牙搜索'] }}</text>
+    </view>
+  </van-grid-item>
+  <van-grid-item data-url="testConfigure" icon="edit" bindtap="toRoute" text="{{ _t['测试配置'] }}"/>
+</van-grid>
+<van-grid column-num="2">
+  <van-grid-item data-url="configure" icon="user-o" bindtap="toRoute" text="{{ _t['标识'] }}"/>
+  <van-grid-item data-url="setting" icon="setting-o" bindtap="toRoute" text="{{ _t['设置'] }}"/>
+</van-grid>
+<van-grid column-num="2">
+  <van-grid-item data-url="logs" icon="orders-o" text="{{ _t['历史数据'] }}" bindtap="toRoute"/>
+  <van-grid-item data-url="autoMeasure" icon="tv-o" bindtap="toRoute" text="{{ _t['实时测量'] }}"/>
+  <!-- <van-grid-item data-url="bels" bindtap="switchLanguage" use-slot>
+    <image
+    class="vant-icon"
+      style="width:26px;height:26px;"
+      src="../../dist/images/{{language === 'English'?'english':'chinese'}}.png"
+    />
+    <view class="gridTextBox">
+      <text>{{ _t['切换语言'] }}</text>
+    </view>
+  </van-grid-item> -->
+</van-grid>
+<!--
+
+<view class="contentview">
+ <view  class='myview' >
+     {{info}}{{systemInfo}}
+ </view>
+ <van-tabs animated sticky>
+  <van-tab title="标签 1">
+    <my-component inner-text="Some text"></my-component>
+  </van-tab>
+  <van-tab title="标签 2">
+    <van-button type="default" bindtap="into">默认按钮</van-button>
+    <van-button type="primary">主要按钮</van-button>
+    <van-button type="warning">警告按钮</van-button>
+    <van-button type="danger">危险按钮</van-button>
+  </van-tab>
+  <van-tab title="标签 3">
+    <van-sidebar active-key="{{ activeKey }}">
+      <van-sidebar-item title="标签名" />
+      <van-sidebar-item title="标签名" />
+      <van-sidebar-item title="标签名" />
+    </van-sidebar>
+  </van-tab>
+  <van-tab title="标签 4">
+    <van-cell title="展示弹出层" is-link bind:click="showPopup" />
+    <van-popup position="left" custom-style="height: 100%;width:50%;" show="{{ show }}" bind:close="onClose">内容</van-popup>
+  </van-tab>
+</van-tabs>
+
+<view>
+</view>
+ <block wx:for="{{list}}" wx:key="id">
+                <view class="kind-list__item">
+                    <view id="{{item.id}}" class="weui-flex kind-list__item-hd {{item.open ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+                        <view class="weui-flex__item">{{item.name}}</view>
+                    </view>
+                    <view class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}">
+                        <view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
+                            <block wx:for="{{item.pages}}" wx:for-item="page" wx:key="*this">
+                                <navigator url="{{page}}/{{page}}" class="weui-cell weui-cell_access">
+                                    <view class="weui-cell__bd">{{page}}</view>
+                                    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                                </navigator>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+            </block>
+ <!-- <button type="primary" class="button" bindtap="searchBEL">搜索蓝牙</button>
+ <button type="primary" class="button" bindtap="initializeBEL">1初始化蓝牙</button>
+ <button type="primary" class="button" bindtap="getBELstatue">2获取蓝牙状态</button>
+ <button type="primary" class="button" bindtap="searchBEL">3搜索周边设备</button>
+ <button type="primary" class="button" bindtap="getDeviceInfo">4获取所有设备</button>
+ <block wx:for="{{devices}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+   <button type="primary" class="button" id="{{item.deviceId}}" style='background-color:red' bindtap="BELConnect">5连接{{item.name}}         </button>
+ </block>
+ <block>
+  <view class="bus-list js_bus_list" wx:for="{{devices}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+    <view data-supplierid="100020" data-key="" class="bus-list-item">
+      <view class="bus-time"> No.{{index+1}}</view>
+      <view class="tobooking" id="{{item.deviceId}}" data-index="{{index}}" bindtap="connect"> 连接 </view>
+      <view class="detail">
+        <view class="detail1">
+          <view class="start">
+            <text class="icon-circle s-icon1"></text>{{item.name}}</view>
+          <view class="end">
+            <text class="icon-circle s-icon2"></text>deviceId:{{item.deviceId}}</view>
+        </view>
+        <view class="tags">
+          <view>
+            <text class="price">{{item.RSSI}}</text>
+          </view>
+          <view>
+            <text class="countleft" class="{{item.isConnect?'connection':'unconnection'}}">{{item.isConnect?'已连接':'未连接'}}</text>
+          </view>
+          <view>
+            <text class="b-tags js_tags"></text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+ </block>
+ <button type="primary" class="button" bindtap="stopSearch">6停止搜索周边蓝牙设备</button>
+ <button type="primary" class="button" bindtap="getServices">7获取所有service</button>
+ <button type="primary" class="button" bindtap="getCharacteristics">8获取所有特征值</button>
+ <button type="primary" class="button" bindtap="listenNotify">9启用特征值变化notify</button>
+ <button type="primary" class="button" bindtap="acceptMessage">10接收蓝牙返回消息</button>
+ <view id="box" class="clearfix">
+  <input id="inp" placeholder='请输入要发送的信息' bindinput='getmsg'/>
+  <button id="btn" bindtap="sendMessage">发送</button>
+ </view>
+</view>
