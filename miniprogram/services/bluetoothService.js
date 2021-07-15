@@ -78,7 +78,7 @@ class BluetoothService extends EventEmitter {
     if (!this.isDiscovering) {
       await this.openBluetooth();
       await wx.startBluetoothDevicesDiscovery({
-        allowDuplicatesKey: false,
+        allowDuplicatesKey: false
       });
       this.isDiscovering = true;
       this.foundDevicesList = [];
@@ -127,19 +127,18 @@ class BluetoothService extends EventEmitter {
       }
 
       const { characteristics } = await wx.getBLEDeviceCharacteristics({ deviceId, serviceId });
-      const readable = characteristics.find(c => c.properties.read);
+      console.log('characteristics', characteristics);
+      // const readable = characteristics.find(c => c.properties.read);
       const writable = characteristics.find(c => c.properties.write);
       const notifiable = characteristics.find(c => c.properties.notify || c.properties.indicate);
 
-      if (readable) {
-        wx.readBLECharacteristicValue({
-          deviceId,
-          serviceId,
-          characteristicId: readable.uuid,
-        });
-      }
-      if (notifiable) {
-        wx.notifyBLECharacteristicValueChange({
+      if (notifiable) { 
+        // await wx.readBLECharacteristicValue({
+        //   deviceId,
+        //   serviceId,
+        //   characteristicId: notifiable.uuid,
+        // });
+        await wx.notifyBLECharacteristicValueChange({
           deviceId,
           serviceId,
           characteristicId: notifiable.uuid,
@@ -148,15 +147,17 @@ class BluetoothService extends EventEmitter {
       }
 
       if (!this.isReadAttached) {
+        console.log('attach notify callback');
         wx.onBLECharacteristicValueChange(({ characteristicId, value }) => {
-          console.log(characteristicId, value);
-          this.emit(BLUETOOTH_EVENT.DATA_RECEIVED, value);
+          const v = ab2str(value);
+          console.log('new message', characteristicId, v);
+          this.emit(BLUETOOTH_EVENT.DATA_RECEIVED, v);
         });
         this.isReadAttached = true;
       }
 
       this.connectStatus = STATUS.DONE;
-      this.connectedDevice.markAsConnected(deviceId, serviceId, readable?.uuid, writable?.uuid, notifiable?.uuid);
+      this.connectedDevice.markAsConnected(deviceId, serviceId, notifiable?.uuid, writable?.uuid, notifiable?.uuid);
     } catch(err) {
       this.connectStatus = STATUS.IDLE;
       throw err;
@@ -176,15 +177,31 @@ class BluetoothService extends EventEmitter {
 
   async writeValue(value) {
     if (this.writable) {
-      wx.writeBLECharacteristicValue({
+      return wx.writeBLECharacteristicValue({
         characteristicId: this.connectedDevice.writeCharacteristic,
         deviceId: this.connectedDevice.deviceId,
         serviceId: this.connectedDevice.serviceId,
-        value: value,
+        value: str2ab(value + '\r\n'),
       });
     }
   }
 
 }
+
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
+  var bufView = new Uint16Array(buf);
+  for (var i = 0, strLen = str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+};
+
+function ab2str(buf) {
+  let unit8Arr = new Uint8Array(buf);
+  let encodedString = String.fromCharCode.apply(null, unit8Arr),
+    decodedString = decodeURIComponent(escape((encodedString))); //没有这一步中文会乱码
+    console.log(encodedString,decodedString)
+};
 
 export default new BluetoothService();

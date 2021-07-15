@@ -187,6 +187,13 @@ Page({
       return that.acceptMessage()
     })
   },
+  async connectDevice(e) {
+    const ds = e.currentTarget.dataset
+    const deviceId = ds.deviceId
+
+    const device = await bluetoothService.connect(deviceId)
+      .catch(err => console.error(err));
+  },
   BELConnect(event) {
     var that = this;
     var deviceIndex = event.currentTarget.dataset.index
@@ -434,8 +441,13 @@ async onLoad() {
     });
   },
   bluetoothDeviceFound(res) {
+    let filterStr = 'EP350'
+    let newArr = res.filter((item, index, arr) => {
+      item.isConnect = bluetoothService.connectedDevice.deviceId == item.deviceId?true:false
+      return item.name.indexOf(filterStr) >= 0
+    });
     console.log(res);
-    this.setData({ devices: res });
+    this.setData({ devices: newArr });
   },
   bluetoothNewData(res) {
     console.log(res);

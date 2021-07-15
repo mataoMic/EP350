@@ -28,7 +28,8 @@
           <view style="margin-left:10px;">{{item.name}}</view>
           <view style="margin-left:10px;">{{item.deviceId}}</view>
           <view style="margin-left:10px;" class="{{item.isConnect?'connection':'unconnection'}}">{{item.isConnect?_t['已连接']:_t['未连接']}}</view>
-          <van-button wx:if="{{ !item.isConnect }}" id="{{item.deviceId}}" data-index="{{index}}" style="margin-left:auto;" type="success"  bindtap="connect">{{ _t['连接'] }}</van-button>
+          <van-button wx:if="{{ !item.isConnect }}" id="{{item.deviceId}}"     data-device-id="{{item.deviceId}}"
+    data-name="{{item.name || item.localName}}"  data-index="{{index}}" style="margin-left:auto;" type="success"  bindtap="connectDevice">{{ _t['连接'] }}</van-button>
         </view>
       </view>
     </van-cell>
