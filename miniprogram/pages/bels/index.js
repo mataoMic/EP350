@@ -1,6 +1,7 @@
 // miniprogram/pages/bels/index.js
 import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
+import bluetoothService, { BLUETOOTH_EVENT } from '../../services/bluetoothService';
 const app = getApp();
 Page({
 
@@ -419,15 +420,26 @@ str2ab(str) {
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+async onLoad() {
     this.setData({
       _t: app.globalData.base._t(), //翻译
     });
     wx.setNavigationBarTitle({
       title: this.data._t['蓝牙搜索']
     })
+    bluetoothService.on(BLUETOOTH_EVENT.DEVICE_FOUND, this.bluetoothDeviceFound);
+    bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.bluetoothNewData);
+    await bluetoothService.startDiscovery().catch(err => {
+      console.error(err);
+    });
   },
-
+  bluetoothDeviceFound(res) {
+    console.log(res);
+    this.setData({ devices: res });
+  },
+  bluetoothNewData(res) {
+    console.log(res);
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

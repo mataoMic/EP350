@@ -38,7 +38,7 @@
     "minifyWXSS": true
   },
   "appid": "wx607282c9af0b761c",
-  "projectname": "EP350-%E6%B5%8B%E8%AF%95",
+  "projectname": "EP350",
   "libVersion": "2.14.1",
   "condition": {
     "search": {
