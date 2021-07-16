@@ -149,8 +149,9 @@ class BluetoothService extends EventEmitter {
       if (!this.isReadAttached) {
         console.log('attach notify callback');
         wx.onBLECharacteristicValueChange(({ characteristicId, value }) => {
+          console.log('new message', characteristicId, value);
           const v = ab2str(value);
-          console.log('new message', characteristicId, v);
+          console.log('new message decoded', characteristicId, v);
           this.emit(BLUETOOTH_EVENT.DATA_RECEIVED, v);
         });
         this.isReadAttached = true;
@@ -190,10 +191,11 @@ class BluetoothService extends EventEmitter {
 
 function str2ab(str) {
   var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
-  var bufView = new Uint16Array(buf);
+  var bufView = new Uint8Array(buf);
   for (var i = 0, strLen = str.length; i < strLen; i++) {
     bufView[i] = str.charCodeAt(i);
   }
+  console.log(buf)
   return buf;
 };
 
@@ -201,7 +203,7 @@ function ab2str(buf) {
   let unit8Arr = new Uint8Array(buf);
   let encodedString = String.fromCharCode.apply(null, unit8Arr),
     decodedString = decodeURIComponent(escape((encodedString))); //没有这一步中文会乱码
-    console.log(encodedString,decodedString)
+    return decodedString;
 };
 
 export default new BluetoothService();

@@ -21,17 +21,17 @@ Component({
    * 组件的初始数据
    */
   data: {
-
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-    checkDetails(){
+    checkDetails(e){
+      console.log(e.currentTarget.dataset.index)
       wx.navigateTo({
         //目的页面地址
-        url: `../testConfigureDetail/index`,
+        url: `../testConfigureDetail/index?index=${e.currentTarget.dataset.index}`,
         success: function(res){
           console.log(res)
         },fail(e){

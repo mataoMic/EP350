@@ -1,12 +1,9 @@
 <!--pages/testConfigureDetail/index.wxml-->
 <van-divider contentPosition="left">{{ _t['信息'] }}</van-divider>
 <van-cell-group>
-  <van-cell title="{{ _t['名称'] }}" value="1 service" />
-  <van-cell title="{{ _t['说明'] }}" value="GPON" />
+  <van-cell title="{{ _t['名称'] }}" value="{{serviceChoiceList.length}} service" />
 </van-cell-group>
-<van-divider contentPosition="left">GPON{{ _t['阈值'] }}</van-divider>
-<van-cell-group>
-  <van-cell title=" ">
+<van-cell title=" ">
     <view sort="value">
       <van-row>
         <van-col span="12">{{ _t['最小值'] }}</van-col>
@@ -14,6 +11,8 @@
       </van-row>
     </view>
   </van-cell>
+<van-cell-group wx:for="{{serviceChoiceList}}" wx:key="index">
+  <van-divider contentPosition="left">{{serviceName[index]}}</van-divider>
   <van-cell title="{{ _t['上行功率'] }}（dBm）" >
     <view sort="value">
       <van-row>
@@ -38,17 +37,5 @@
       </van-row>
     </view>
   </van-cell>
-  <van-cell title="{{ _t['下行损耗'] }}（dbB）">
-    <view sort="value">
-      <van-row>
-        <van-col span="12">
-          <input type="text" value="{{loss.min}}"/>
-        </van-col>
-        <van-col span="12">
-          <input type="text" value="{{loss.max}}"/>
-        </van-col>
-      </van-row>
-    </view>
-  </van-cell>
-  <van-button type="primary" block>{{ _t['修改阈值'] }}</van-button>
 </van-cell-group>
+<van-button type="primary" block>{{ _t['修改阈值'] }}</van-button>

@@ -47,7 +47,7 @@ onLoad() {
     bluetoothService.writeValue('COMMon:DCDEVice:GetThreshold')
     .then(res => {
       // 这是成功
-      console.log(res);
+      console.log('写入成功',res);
     })
     .catch((e)=>{
       // 这是失败
@@ -56,6 +56,9 @@ onLoad() {
   },
   onUnload() {
     bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
+    bluetoothService.stopDiscovery().catch((e)=>{
+      console.error(e)
+    })
   },
   onReceive(res) {
     console.log('new message', res);

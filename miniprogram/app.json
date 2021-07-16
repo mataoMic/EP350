@@ -2,16 +2,15 @@
   "pages": [
     "pages/index/index",
     "pages/setting/index",
-    
     "pages/createImg/index",
     "pages/logDetails/index",
-    "pages/testConfigureDetail/index",
     "pages/testConfigure/index",
     "pages/configure/index",
     "pages/logs/index",
     "pages/bels/index",
     "pages/autoMeasure/index",
-    "pages/bleTest/index"
+    "pages/bleTest/index",
+    "pages/testConfigureDetail/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

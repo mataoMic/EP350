@@ -434,11 +434,16 @@ async onLoad() {
     wx.setNavigationBarTitle({
       title: this.data._t['蓝牙搜索']
     })
-    bluetoothService.on(BLUETOOTH_EVENT.DEVICE_FOUND, this.bluetoothDeviceFound);
+    // bluetoothService.on(BLUETOOTH_EVENT.DEVICE_FOUND, this.bluetoothDeviceFound);
     bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.bluetoothNewData);
     await bluetoothService.startDiscovery().catch(err => {
       console.error(err);
     });
+  },
+  onUnload: function () {
+    bluetoothService.stopDiscovery().catch((e)=>{
+      console.error(e)
+    })
   },
   bluetoothDeviceFound(res) {
     let filterStr = 'EP350'
@@ -451,53 +456,5 @@ async onLoad() {
   },
   bluetoothNewData(res) {
     console.log(res);
-  },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   }
 })
