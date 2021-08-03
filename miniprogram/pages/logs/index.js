@@ -5,12 +5,15 @@ import bluetoothService, { BLUETOOTH_EVENT } from '../../services/bluetoothServi
 const app = getApp();
 Page({
   data: {
-    logs: []
+    res:'',
+    logs: [],
+    passNum:5,
+    noState:0
   },
-  checkDetails(){
+  checkDetails(e){
     wx.navigateTo({
       //目的页面地址
-      url: `../logDetails/index`,
+      url: `../logDetails/index?index=${e.currentTarget.dataset.index}`,
       success: function(res){
         console.log(res)
       },fail(e){
@@ -44,7 +47,7 @@ onLoad() {
 
     bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
 
-    bluetoothService.writeValue('COMMon:DCDEVice:GetThreshold')
+    bluetoothService.writeValue('COMMon:DCDEVice:GetFiles?')
     .then(res => {
       // 这是成功
       console.log('写入成功',res);
@@ -61,7 +64,22 @@ onLoad() {
     })
   },
   onReceive(res) {
+    let that = this
+    this.setData({
+      res:that.data.res + res
+    })
+    if (res[res.length-1] ==  '\n') {
+      this.showDate(this.data.res)
+    }
     console.log('new message', res);
+  },
+  showDate(data){
+    let str = data.slice(data.indexOf(':[{') + 1,data.length-2)
+    console.log(str)
+    let json = JSON.parse(str);
+    this.setData({logs:json})
+    app.globalData.logs = json
+    console.log(json)
   },
   async getInfo(){
     let a = await wxPromise.app.characteristicValue('123')

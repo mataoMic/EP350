@@ -34,39 +34,5 @@
       </view>
     </van-cell>
   </van-cell-group>
-  <!-- <view class="bus-list js_bus_list" wx:for="{{devices}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-    <view data-supplierid="100020" data-key="" class="bus-list-item">
-      <view class="bus-time"> No.{{index+1}}</view>
-      <view class="tobooking" id="{{item.deviceId}}" data-index="{{index}}" bindtap="connect"> 连接 </view>
-      <view class="detail">
-        <view class="detail1">
-          <view class="start">
-            <text class="icon-circle s-icon1"></text>{{item.name}}</view>
-          <view class="end">
-            <text class="icon-circle s-icon2"></text>deviceId:{{item.deviceId}}</view>
-        </view>
-        <view class="tags">
-          <view>
-            <text class="price">{{item.RSSI}}</text>
-          </view>
-          <view>
-            <text class="countleft" class="{{item.isConnect?'connection':'unconnection'}}">{{item.isConnect?'已连接':'未连接'}}</text>
-          </view>
-          <view>
-            <text class="b-tags js_tags"></text>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view> -->
  </block>
- <!-- <button type="primary" class="button" bindtap="stopSearch">6停止搜索周边蓝牙设备</button>
- <button type="primary" class="button" bindtap="getServices">7获取所有service</button>
- <button type="primary" class="button" bindtap="getCharacteristics">8获取所有特征值</button>
- <button type="primary" class="button" bindtap="listenNotify">9启用特征值变化notify</button>
- <button type="primary" class="button" bindtap="acceptMessage">10接收蓝牙返回消息</button> -->
- <view wx:if="{{ devices.length>0 }}" id="box" class="clearfix">
-  <input id="inp" placeholder='请输入要发送的信息' bindinput='getmsg'/>
-  <button id="btn" bindtap="sendMessage">发送</button>
- </view>
 </view>

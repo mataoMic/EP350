@@ -191,7 +191,12 @@ Page({
     const ds = e.currentTarget.dataset
     const deviceId = ds.deviceId
 
-    const device = await bluetoothService.connect(deviceId)
+    const device = await bluetoothService.connect(deviceId).then(res => {
+      app.globalData.connected = true
+      this.setData({
+        ['devices['+ds.index+'].isConnect']: true
+      })
+    })
       .catch(err => console.error(err));
   },
   BELConnect(event) {
@@ -423,7 +428,7 @@ str2ab(str) {
     bufView[i] = str.charCodeAt(i);
   }
   return buf;
-},
+}, 
   /**
    * 生命周期函数--监听页面加载
    */
@@ -435,15 +440,18 @@ async onLoad() {
       title: this.data._t['蓝牙搜索']
     })
     // bluetoothService.on(BLUETOOTH_EVENT.DEVICE_FOUND, this.bluetoothDeviceFound);
+    bluetoothService.on(BLUETOOTH_EVENT.CONNECT_STATE_CHANGE, this.bluetoothConnectStateChange);
     bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.bluetoothNewData);
     await bluetoothService.startDiscovery().catch(err => {
       console.error(err);
     });
   },
-  onUnload: function () {
+  onUnload() {
     bluetoothService.stopDiscovery().catch((e)=>{
       console.error(e)
-    })
+    });
+    bluetoothService.off(BLUETOOTH_EVENT.CONNECT_STATE_CHANGE, this.bluetoothConnectStateChange);
+    bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.bluetoothNewData);
   },
   bluetoothDeviceFound(res) {
     let filterStr = 'EP350'
@@ -453,6 +461,11 @@ async onLoad() {
     });
     console.log(res);
     this.setData({ devices: newArr });
+  },
+  bluetoothConnectStateChange(res) {
+    console.log(res);
+    app.globalData.connected = res.connected
+    Notify({ type: 'primary', message: res.deviceId + res.connected?'conneed':'break' });
   },
   bluetoothNewData(res) {
     console.log(res);

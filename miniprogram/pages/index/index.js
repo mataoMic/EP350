@@ -1,12 +1,14 @@
 // pages/lanyatest/lanyatest.js
 // var base = require('../../utils/base');  //路径可能做相应调整
 const app = getApp();
+import bluetoothService, { BLUETOOTH_EVENT } from '../../services/bluetoothService';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    connected:false,
     language:'',
     show: false,
     info: "未初始化蓝牙适配器",
@@ -57,13 +59,11 @@ Page({
     })
   },
   onShareAppMessage(){
-    console.log("123")
     let that =this;
     return {
       title: '简直走别拐弯', // 转发后 所显示的title
       path: '/pages/index/index', // 相对的路径
       success: (res)=>{    // 成功后要做的事情
-        console.log(res.shareTickets[0])
         // console.log
        
         wx.getShareInfo({
@@ -72,7 +72,6 @@ Page({
             that.setData({
               isShow:true
             }) 
-            console.log(that.setData.isShow)
            },
           fail: function (res) { console.log(res) },
           complete: function (res) { console.log(res) }
@@ -111,8 +110,16 @@ Page({
       // Do something when catch error
     }
   },
+  onShow(){
+    this.setData({
+      connected : app.globalData.connected
+    })
+    console.log(app.globalData.connected)
+  },
   onLoad: function () {
     // 登录页面切换中英文需要
+    console.log(app.globalData.connected)
+    bluetoothService.on(BLUETOOTH_EVENT.CONNECT_STATE_CHANGE, this.bluetoothConnectStateChange);
     this.language = app.globalData.language
     if (app.globalData.base.getLanguage() == 'zh_CN') {
       this.setData({
@@ -126,6 +133,12 @@ Page({
     this.setData({
       _t: app.globalData.base._t(), //翻译
     });
+  },
+  onUnload() {
+    bluetoothService.off(BLUETOOTH_EVENT.CONNECT_STATE_CHANGE, this.bluetoothConnectStateChange);
+  },
+  bluetoothConnectStateChange(res){
+    this.setData({connected : res.connected})
   },
   switchLanguage: function() {
     if (app.globalData.base.getLanguage() == 'zh_CN'){

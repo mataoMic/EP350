@@ -14,7 +14,7 @@ Page({
     servicesCompose:[[0],[0,1],[0,2],[3,4,5],[0,6],[0,7]],
     serviceName:['GPON','XGS-PON','NG-PON2','1G-EPON','10G-1G-EPON','10G-EPON','ALT-PON','RF-PON'],
     serviceChoiceList:[],
-    services:[]
+    servicesData:[]
   },
 
   /**
@@ -43,6 +43,25 @@ Page({
   onUnload() {
     bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
   },
+  bindInput(e){
+    // 表单双向数据绑定
+    var that = this;
+    var dataset = e.currentTarget.dataset;
+    console.log(dataset)
+    // data-开头的是自定义属性，可以通过dataset获取到，dataset是一个json对象
+    var name = dataset.name;
+    var type = dataset.type;
+    
+    var value = e.detail.value;
+
+    // 拼接对象属性名，用于为对象属性赋值
+    var attributeName = 'servicesData.' + 'Service' + type + '[' + name  + ']'
+    console.log(attributeName + ':' + value)
+    that.setData({
+      [attributeName]: parseInt(value)
+    });
+    console.log(that.data.servicesData)
+  },
   onReceive(res) {
     let that = this
     this.setData({
@@ -54,6 +73,33 @@ Page({
     console.log('new message', res);
   },
   showDate(data){
-    console.log(data)
+    let str = data.slice(data.indexOf(':{') + 1,data.length-2)
+    console.log(str)
+    let json = JSON.parse(str);
+    this.setData({servicesData:json})
+    console.log(json)
   },
+  setVal(){
+    console.log(this.data.servicesData)
+    let str1 = JSON.stringify(this.data.servicesData)
+    console.log(str1)
+    let str = 'COMMon:DCDEVice:SetThreshold:' + JSON.stringify(this.data.servicesData)
+    console.log(str)
+    bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
+    bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, function (res) {
+      console.log(res)
+    });
+    for (let i = 0; i < str.length; i = i+60) {
+      console.log(str.slice(i,i+60>i.length?str.length:i+60))
+      bluetoothService.writeValue(str.slice(i,i+60>i.length?str.length:i+60),i+60>str.length?false:true)
+      .then(res => {
+        // 这是成功
+        console.log(res);
+      })
+      .catch((e)=>{
+        // 这是失败
+        console.error(e)
+      })
+    }
+  }
 })

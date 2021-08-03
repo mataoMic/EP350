@@ -1,5 +1,6 @@
 <!--pages/testConfigureDetail/index.wxml-->
 <van-divider contentPosition="left">{{ _t['信息'] }}</van-divider>
+<van-toast id="van-toast" />
 <van-cell-group>
   <van-cell title="{{ _t['名称'] }}" value="{{serviceChoiceList.length}} service" />
 </van-cell-group>
@@ -11,16 +12,16 @@
       </van-row>
     </view>
   </van-cell>
-<van-cell-group wx:for="{{serviceChoiceList}}" wx:key="index">
-  <van-divider contentPosition="left">{{serviceName[index]}}</van-divider>
+<van-cell-group wx:for="{{serviceChoiceList}}" wx:key="i">
+  <van-divider contentPosition="left">{{serviceName[item]}}</van-divider>
   <van-cell title="{{ _t['上行功率'] }}（dBm）" >
     <view sort="value">
       <van-row>
         <van-col span="12">
-          <input type="text" value="{{up.min}}"/>
+          <input type="text" data-type="{{item}}" data-name="1" value="{{servicesData['Service' + item][1]}}" bindinput="bindInput"/>
         </van-col>
         <van-col span="12">
-          <input type="text" value="{{up.max}}"/>
+          <input type="text" data-type="{{item}}" data-name="0" value="{{servicesData['Service' + item][0]}}" bindinput="bindInput"/>
         </van-col>
       </van-row>
     </view>
@@ -29,13 +30,13 @@
     <view sort="value">
       <van-row>
         <van-col span="12">
-          <input type="text" value="{{down.min}}"/>
+          <input type="text" data-type="{{item}}" data-name="3" value="{{servicesData['Service' + item][3]}}" bindinput="bindInput"/>
         </van-col>
         <van-col span="12">
-          <input type="text" value="{{down.max}}"/>
+          <input type="text" data-type="{{item}}" data-name="2" value="{{servicesData['Service' + item][2]}}" bindinput="bindInput"/>
         </van-col>
       </van-row>
     </view>
   </van-cell>
 </van-cell-group>
-<van-button type="primary" block>{{ _t['修改阈值'] }}</van-button>
+<van-button type="primary" block bindtap="setVal">{{ _t['修改阈值'] }}</van-button>

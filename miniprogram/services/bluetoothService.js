@@ -1,8 +1,11 @@
 import { EventEmitter } from 'events';
+import Toast from '../miniprogram_npm/@vant/weapp/toast/toast';
+const app = getApp();
 
 export const BLUETOOTH_EVENT = {
   DEVICE_FOUND: 'DEVICE_FOUND',
   DATA_RECEIVED: 'DATA_RECEIVED',
+  CONNECT_STATE_CHANGE:'CONNECT_STATE_CHANGE',
 };
 export const STATUS = {
   IDLE: 'IDLE',
@@ -42,6 +45,7 @@ class BluetoothService extends EventEmitter {
 
   isDeviceFoundAttached = false;
   isReadAttached = false;
+  isConnectStateChangeAttached = false;
 
   foundDevicesList = [];
   connectedDevice = new ConnectedDevice();
@@ -157,6 +161,15 @@ class BluetoothService extends EventEmitter {
         this.isReadAttached = true;
       }
 
+      if (!this.isConnectStateChangeAttached) {
+        wx.onBLEConnectionStateChange((res) => {
+          this.emit(BLUETOOTH_EVENT.CONNECT_STATE_CHANGE, res);
+          console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
+          app.globalData.connected = res.connected
+        });
+        this.isConnectStateChangeAttached = true;
+      }
+
       this.connectStatus = STATUS.DONE;
       this.connectedDevice.markAsConnected(deviceId, serviceId, notifiable?.uuid, writable?.uuid, notifiable?.uuid);
     } catch(err) {
@@ -176,13 +189,20 @@ class BluetoothService extends EventEmitter {
     this.connectedDevice.markAsDisconnected();
   }
 
-  async writeValue(value) {
+  async writeValue(value,loop) {
+    if (!app.globalData.connected) {
+      Toast.fail('请连接设备！');
+    }
+    if (!loop) {
+      console.log('最后'+value)
+      value = value + '\n'
+    }
     if (this.writable) {
       return wx.writeBLECharacteristicValue({
         characteristicId: this.connectedDevice.writeCharacteristic,
         deviceId: this.connectedDevice.deviceId,
         serviceId: this.connectedDevice.serviceId,
-        value: str2ab(value + '\r\n'),
+        value: str2ab(value),
       });
     }
   }
@@ -190,7 +210,7 @@ class BluetoothService extends EventEmitter {
 }
 
 function str2ab(str) {
-  var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
+  var buf = new ArrayBuffer(str.length); // 每个字符占用2个字节
   var bufView = new Uint8Array(buf);
   for (var i = 0, strLen = str.length; i < strLen; i++) {
     bufView[i] = str.charCodeAt(i);

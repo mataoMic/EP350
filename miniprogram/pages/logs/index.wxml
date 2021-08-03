@@ -11,22 +11,22 @@
        <view>
         {{ _t['通过率'] }}
        </view>
-        5/10
+        {{ passNum + '/' + logs.length}}
       </view>
     </van-circle>
   </view>
   <view slot="">
-    <van-button type="primary" size="small" block>5{{ _t['通过'] }}</van-button>
-    <van-button type="danger" size="small" block>5{{ _t['未通过'] }}</van-button>
-    <van-button type="default" size="small" block>0{{ _t['无状态'] }}</van-button>
+    <van-button type="primary" size="small" block>{{ passNum + _t['通过'] }}</van-button>
+    <van-button type="danger" size="small" block>{{ (logs.length-passNum) + _t['未通过'] }}</van-button>
+    <van-button type="default" size="small" block>{{ noState + _t['无状态'] }}</van-button>
   </view>
 </van-cell>
 <view>
   <van-empty wx:if="{{ logs.length == 0 }}" description="{{ _t['无记录'] }}" />
-  <van-cell title-width="50" wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log"  bindtap="checkDetails" is-link>
+  <van-cell title-width="50" data-index="{{index}}" wx:if="{{index !== 0}}" wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log"  bindtap="checkDetails" is-link>
     <van-icon slot="icon" name="{{index%2===0?'cross':'success'}}" color="{{index%2===0?'red':'green'}}" />
     <view slot="" style="text-align:center">
-      <view>A-EP0000{{ index }}</view>
+      <view>{{ log.file_name }}</view>
       {{log.date}}
     </view>
     <!-- <view slot="title">
