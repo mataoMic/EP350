@@ -72,7 +72,10 @@ const languageMap = {
   '从不':'Disabled',
   '设置时间':'Set Device Time',
   '确认':'confirm',
-  '取消':'cancel'
+  '取消':'cancel',
+  '版本信息':'version-info',
+  '硬件版本':'Hardware',
+  '软件版本':'Software'
 }
 module.exports = {
   languageMap : languageMap

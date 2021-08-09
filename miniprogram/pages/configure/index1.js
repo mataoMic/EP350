@@ -1,4 +1,5 @@
 // miniprogram/pages/configure/index1.js
+const app = getApp();
 Page({
 
   /**
@@ -12,7 +13,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      _t: app.globalData.base._t(), //翻译
+    });
+    wx.setNavigationBarTitle({
+      title: this.data._t['标识']
+    })
   },
 
   /**

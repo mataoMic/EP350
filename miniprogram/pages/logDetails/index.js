@@ -6,10 +6,11 @@ Page({
    * 页面的初始数据
    */
   data: {
+    time:'2021.8.8',
+    isPass:false,
     log:{
       dBm: [-15, -17.01, -15, -62.48, "", ""],
       file_index: 0,
-      file_name: "A-EP00095",
       high_low: [4, 4, 4, 4, "", ""],
       service_flag: 2,
       service_name: ["GPON", "XGS", ""],
@@ -35,6 +36,8 @@ reloadLog(log){
   let serviceData = []
   for (let i = 0; i < log.service_name.length; i++) {
     this.setData({file_name:log.file_name})
+    this.setData({isPass:log.service_flag == 0?true:false}) 
+    this.setData({time:log.save_time})
     if (log.service_name[i] !== '') {
       let _log = {
         dBm:{up:log.dBm[i*2],down:log.dBm[i*2+1]},
