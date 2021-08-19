@@ -25,12 +25,22 @@ App({
     connected:false,
     userInfo: null,
     language:'中文',
+    logDetail:[],
     base:require('./utils/base'),
     _t:'',
     deviceId:'',
     serviceId:'',
     characteristicId:'',
-    notifyCharacteristicsId:''
+    notifyCharacteristicsId:'',
+    configure:{
+      task:'',
+      operator:'',
+      customer:'',
+      company:'',
+      position:'',
+      optical:'',
+      connector:''
+    }
   },
   toRoute(e){
     let toUrl = e.currentTarget.dataset.url

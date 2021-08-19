@@ -2,13 +2,13 @@
 <h2>{{ _t['标识'] }}</h2>
 <van-cell-group>
   <van-cell-group>
-  <van-field v-model="value" label="{{ _t['任务标识'] }}" placeholder="{{ _t['请输入'] }}" />
-  <van-field v-model="value" label="{{ _t['操作员'] }}" placeholder="{{ _t['请输入'] }}" />
-  <van-field v-model="value" label="{{ _t['客户'] }}" placeholder="{{ _t['请输入'] }}" />
-  <van-field v-model="value" label="{{ _t['公司'] }}" placeholder="{{ _t['请输入'] }}" />
-  <van-field v-model="value" label="{{ _t['位置'] }}" placeholder="{{ _t['请输入'] }}" />
-  <van-field v-model="value" label="{{ _t['光纤标识'] }}" placeholder="{{ _t['请输入'] }}" />
-  <van-field v-model="value" label="{{ _t['连接器标识'] }}" placeholder="{{ _t['请输入'] }}" />
+  <van-field data-id="task" value="{{task}}" label="{{ _t['任务标识'] }}" placeholder="{{ _t['请输入'] }}" bind:change="onChange" />
+  <van-field data-id="operator" value="{{operator}}"  label="{{ _t['操作员'] }}" placeholder="{{ _t['请输入'] }}" bind:change="onChange" />
+  <van-field data-id="customer" value="{{customer}}"  label="{{ _t['客户'] }}" placeholder="{{ _t['请输入'] }}" bind:change="onChange" />
+  <van-field data-id="company" value="{{company}}"  label="{{ _t['公司'] }}" placeholder="{{ _t['请输入'] }}" bind:change="onChange" />
+  <van-field data-id="position" value="{{position}}"  label="{{ _t['位置'] }}" placeholder="{{ _t['请输入'] }}" bind:change="onChange" />
+  <van-field data-id="optical" value="{{optical}}"  label="{{ _t['光纤标识'] }}" placeholder="{{ _t['请输入'] }}" bind:change="onChange" /> 
+  <van-field data-id="connector" value="{{connector}}"  label="{{ _t['连接器标识'] }}" placeholder="{{ _t['请输入'] }}" bind:change="onChange" />
   <van-field
   v-model="message"
   rows="2"

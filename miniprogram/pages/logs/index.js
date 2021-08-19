@@ -31,14 +31,6 @@ onLoad() {
     // })
     // app.sendMsg('123')
     this.setData({
-      logs: (wx.getStorageSync('logs') || []).map(log => {
-        return {
-          date: util.formatTime(new Date(log)),
-          timeStamp: log
-        }
-      })
-    })
-    this.setData({
       _t: app.globalData.base._t(), //翻译
     });
     wx.setNavigationBarTitle({

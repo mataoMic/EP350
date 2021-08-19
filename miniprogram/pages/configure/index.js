@@ -1,66 +1,60 @@
 // miniprogram/pages/configure/index1.js
+const app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    task:'',
+    operator:'',
+    customer:'',
+    company:'',
+    position:'',
+    optical:'',
+    connector:''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onLoad: function () {
+    this.setData({
+      _t: app.globalData.base._t(), //翻译
+    });
+    console.log(app.globalData.configure)
+    let c = app.globalData.configure
+    this.setData({
+      task:c.task,
+      operator:c.operator,
+      customer:c.customer,
+      company:c.company,
+      position:c.position,
+      optical:c.optical,
+      connector:c.connector
+    })
+    wx.setNavigationBarTitle({
+      title: this.data._t['标识']
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onChange(e) {
+    // event.detail 为当前输入的值
+    this.setData({
+      [e.currentTarget.dataset.id]:e.detail
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    app.globalData.configure = {
+      task:this.data.task,
+      operator:this.data.operator,
+      customer:this.data.customer,
+      company:this.data.company,
+      position:this.data.position,
+      optical:this.data.optical,
+      connector:this.data.connector
+    }
   }
 })

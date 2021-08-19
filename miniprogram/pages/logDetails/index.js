@@ -23,14 +23,20 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
     this.setData({
       _t: app.globalData.base._t(), //翻译
+      currentIndex:options.index
     });
     wx.setNavigationBarTitle({
       title: this.data._t['记录详情']
     })
     this.reloadLog(app.globalData.logs[options.index])
+  },
+  openImg(){
+    let that = this
+    wx.navigateTo({
+      url: `../createImg/index?index=${that.data.currentIndex}`
+    })
   },
 reloadLog(log){
   let serviceData = []
@@ -44,11 +50,13 @@ reloadLog(log){
         type:{up:log.high_low[i*2],down:log.high_low[i*2+1]},
         service_name:log.service_name[i],
         threshold:{up:{max:log.threshold[i][0],min:log.threshold[i][1]},down:{max:log.threshold[i][2],min:log.threshold[i][3]}},
-        time:log.save_time
+        time:log.save_time,
+        wavelength:[log.wave[i*2],log.wave[i*2+1]]
       }
       serviceData.push(_log)
     }
   }
+  app.globalData.logDetail = serviceData
   this.setData({serviceData})
 },
   /**

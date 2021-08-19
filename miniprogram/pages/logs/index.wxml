@@ -22,7 +22,7 @@
   </view>
 </van-cell>
 <view>
-  <van-empty wx:if="{{ logs.length == 0 }}" description="{{ _t['无记录'] }}" />
+  <van-empty wx:if="{{ logs.length < 1 }}" description="{{ _t['无记录'] }}" />
   <van-cell title-width="50" data-index="{{index}}" wx:if="{{index !== 0}}" wx:for="{{logs}}" wx:key="timeStamp" wx:for-item="log"  bindtap="checkDetails" is-link>
     <van-icon slot="icon" name="{{log.service_flag===0?'success':'cross'}}" color="{{log.service_flag===0?'green':'red'}}" />
     <view slot="" style="text-align:center">
