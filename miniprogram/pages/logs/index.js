@@ -68,6 +68,7 @@ onLoad() {
   showDate(data){
     let str = data.slice(data.indexOf(':[{') + 1,data.length-2)
     console.log(str)
+    console.log(str.slice(1010,data.length-2))
     let json = JSON.parse(str);
     this.setData({logs:json})
     app.globalData.logs = json

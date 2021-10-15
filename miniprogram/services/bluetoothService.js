@@ -110,7 +110,20 @@ class BluetoothService extends EventEmitter {
       this.isDiscovering = false;
     }
   }
-
+  async getConnectedDevice() {
+    if (this.connected) {
+      return new Promise((resolve,reject)=>{
+        wx.getConnectedBluetoothDevices({
+          services: [app.globalData.serviceId],
+          success (res) {
+            resolve(res)
+          },fail(f){
+            reject(f)
+          }
+        })
+      })
+    }
+  }
   async connect(deviceId) {
     if (this.connectStatus === STATUS.PENDING) {
       throw new Error('another connection is in progress.');
@@ -124,7 +137,7 @@ class BluetoothService extends EventEmitter {
 
       await wx.createBLEConnection({ deviceId });
       const { services } = await wx.getBLEDeviceServices({ deviceId });
-      const serviceId = services.find(s => s.isPrimary)?.uuid;
+      const serviceId = app.globalData.serviceId = services.find(s => s.isPrimary)?.uuid;
 
       if (!serviceId) {
         throw new Error('no primary service');

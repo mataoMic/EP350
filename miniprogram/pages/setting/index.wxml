@@ -1,21 +1,22 @@
 <!--miniprogram/pages/setting/index.wxml-->
+<van-toast id="van-toast" />
 <view>
-  <van-cell title="{{ _t['蓝牙功能'] }}" icon="shop-o">
+  <van-cell title="{{ _t['蓝牙功能'] }}">
     <view slot=""> 
       <van-switch  data-id='ble' checked="{{ ble}}" bind:change="onChange" />
     </view>
   </van-cell>
-  <van-cell title="ONT CW" icon="shop-o">
+  <van-cell title="ONT CW">
     <view slot=""> 
       <van-switch  data-id='ont' checked="{{ ont }}" bind:change="onChange" />
     </view>
   </van-cell>
-  <van-cell title="VFL" icon="shop-o">
+  <van-cell title="VFL">
     <view slot=""> 
       <van-switch data-id='vfl' checked="{{ vfl }}" bind:change="onChange" />
     </view>
   </van-cell>
-  <van-cell title="{{ _t['自动关机'] }}" icon="shop-o">
+  <van-cell title="{{ _t['自动关机'] }}">
     <view slot=""> 
       <van-radio-group
         data-id='autoOff'

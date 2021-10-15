@@ -39,7 +39,8 @@ App({
       company:'',
       position:'',
       optical:'',
-      connector:''
+      connector:'',
+      message:''
     }
   },
   toRoute(e){

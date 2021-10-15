@@ -1,8 +1,8 @@
 // miniprogram/pages/testConfigureDetail/jindex1.js
 import bluetoothService, { BLUETOOTH_EVENT } from '../../services/bluetoothService';
+import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
 const app = getApp();
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -14,7 +14,8 @@ Page({
     servicesCompose:[[0],[0,1],[0,2],[3,4,5],[0,6],[0,7]],
     serviceName:['GPON','XGS-PON','NG-PON2','1G-EPON','10G-1G-EPON','10G-EPON','ALT-PON','RF-PON'],
     serviceChoiceList:[],
-    servicesData:[]
+    servicesData:[],
+    canSet:true
   },
 
   /**
@@ -57,6 +58,13 @@ Page({
     // 拼接对象属性名，用于为对象属性赋值
     var attributeName = 'servicesData.' + 'Service' + type + '[' + name  + ']'
     console.log(attributeName + ':' + value)
+    this.setData({canSet:true})
+    console.log(this.IsNumber(value));
+    if (!this.IsNumber(parseInt(value))) {
+      Notify({ type: 'danger', message:'must number!' });
+      this.setData({canSet:false})
+      return false
+    }
     that.setData({
       [attributeName]: parseInt(value)
     });
@@ -79,7 +87,18 @@ Page({
     this.setData({servicesData:json})
     console.log(json)
   },
+  IsNumber(value){
+    return (typeof value === 'number' && !isNaN(value))
+  },
   setVal(){
+    if (!this.canSet) {
+      Notify({ type: 'danger', message:'must number!' });
+      return false
+    }
+    if (this.up.min > this.up.max ||this.down.min > this.down.max) {
+      Notify({ type: 'danger', message:'最小值不得大于最大值!' });
+      return false
+    }
     console.log(this.data.servicesData)
     let str1 = JSON.stringify(this.data.servicesData)
     console.log(str1)

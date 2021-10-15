@@ -1,6 +1,7 @@
 <!--pages/testConfigureDetail/index.wxml-->
 <van-divider contentPosition="left">{{ _t['信息'] }}</van-divider>
 <van-toast id="van-toast" />
+<van-notify id="van-notify" />
 <van-cell-group>
   <van-cell title="{{ _t['名称'] }}" value="{{serviceChoiceList.length}} service" />
 </van-cell-group>
@@ -18,10 +19,10 @@
     <view sort="value">
       <van-row>
         <van-col span="12">
-          <input type="text" data-type="{{item}}" data-name="1" value="{{servicesData['Service' + item][1]}}" bindinput="bindInput"/>
+          <input type="number" data-name="1" value="{{servicesData['Service' + item][1]}}" bindinput="bindInput"/>
         </van-col>
         <van-col span="12">
-          <input type="text" data-type="{{item}}" data-name="0" value="{{servicesData['Service' + item][0]}}" bindinput="bindInput"/>
+          <input type="number" data-name="0" value="{{servicesData['Service' + item][0]}}" bindinput="bindInput"/>
         </van-col>
       </van-row>
     </view>
@@ -30,10 +31,10 @@
     <view sort="value">
       <van-row>
         <van-col span="12">
-          <input type="text" data-type="{{item}}" data-name="3" value="{{servicesData['Service' + item][3]}}" bindinput="bindInput"/>
+          <input type="number" data-name="3" value="{{servicesData['Service' + item][3]}}" bindinput="bindInput"/>
         </van-col>
         <van-col span="12">
-          <input type="text" data-type="{{item}}" data-name="2" value="{{servicesData['Service' + item][2]}}" bindinput="bindInput"/>
+          <input type="number" data-name="2" value="{{servicesData['Service' + item][2]}}" bindinput="bindInput"/>
         </van-col>
       </van-row>
     </view>

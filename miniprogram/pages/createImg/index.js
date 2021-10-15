@@ -13,8 +13,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    console.log(options)
+  onLoad: function () {
     var that = this 
     // 获取设备宽高，以备海报全屏显示
     wx.getSystemInfo({
@@ -26,8 +25,6 @@ Page({
         })
       },
     })
-    let resData = app.globalData.logs[options.index]
-    console.log(resData)
     this.setData({
       _t: app.globalData.base._t(), //翻译
     });
@@ -35,22 +32,6 @@ Page({
       title: this.data._t['输出报告']
     })
     console.log(app.globalData.logDetail)
-    let a = [{
-      service_name:'GPON',
-      servicestate:'活动',
-      wavelength:['1310','1490'],
-      dBm:['-15.38','-10.06'],
-      threshold:['-20.00','4.00','-20.00','4.00'],
-      type:[this.data._t['通过'],this.data._t['通过']]
-    },
-    {
-      service_name:'XGS-PON',
-      servicestate:'活动',
-      wavelength:['1270','1578'],
-      dBm:['LOW','LOW'],
-      threshold:['-20.00','4.00','-20.00','4.00'],
-      type:[this.data._t['未通过'],this.data._t['未通过']]
-    }]
     this.setData({
       resList:app.globalData.logDetail
     })
@@ -103,13 +84,13 @@ Page({
     context.fillText(this.data._t['注释'], 10, 210)
     // 第二行数据
     context.fillText('EP350', 90, 70)
-    context.fillText('test', 90, 90)
+    context.fillText(app.globalData.configure.task, 90, 90)
     context.fillText(this.data.resList[0].time, 90, 110)
-    context.fillText('me', 90, 130)
-    context.fillText('', 90, 150)
-    context.fillText('import', 90, 170)
-    context.fillText('2019/11/1', 90, 190)
-    context.fillText('', 90, 210)
+    context.fillText(app.globalData.configure.operator, 90, 130)
+    context.fillText(app.globalData.configure.connector, 90, 150)
+    context.fillText(app.globalData.configure.position, 90, 170)
+    context.fillText('校准日期值', 90, 190)
+    context.fillText(app.globalData.configure.message, 90, 210)
 
     // 第三行数据
     context.fillText(this.data._t['客户'], 200, 70)
@@ -117,9 +98,9 @@ Page({
     context.fillText(this.data._t['光纤标识'], 200, 110)
 
     // 第四行数据
-    context.fillText(this.data._t['客户'], 250, 70)
-    context.fillText(this.data._t['公司'], 250, 90)
-    context.fillText(this.data._t['光纤标识'], 250, 110)
+    context.fillText(app.globalData.configure.customer, 250, 70)
+    context.fillText(app.globalData.configure.company, 250, 90)
+    context.fillText(app.globalData.configure.optical, 250, 110)
 
     // 子二标题
     context.setFillStyle("#000")

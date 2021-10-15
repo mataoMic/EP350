@@ -30,6 +30,7 @@ const languageMap = {
   '连接':'connect',
   '已连接':'connected',
   '未连接':'unconnected',
+  '断开连接':'disconnect',
   //标识
   '任务标识':'task identifier',
   '操作员':'operator',

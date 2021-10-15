@@ -45,6 +45,9 @@ Page({
     })
     .catch((e)=>{
       console.error(e)
+      this.setData({
+        btnDisabled:false
+      })
     })
   },
   stopMeasure(){
@@ -92,7 +95,7 @@ Page({
     console.log(str)
     let json = JSON.parse(str);
     for (let i = 0; i < json.service_num; i++) {
-      let obj = {up:{data:'',type:''},down:{data:'',type:''}}
+      let obj = {up:{data:'',type:'',max:'',min:''},down:{data:'',type:'',max:'',min:''}}
       obj.name = json.service_name[i]
       obj.up.data = json.dBm[i][0]
       obj.down.data = json.dBm[i][1]

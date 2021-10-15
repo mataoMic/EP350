@@ -12,7 +12,8 @@ Page({
     company:'',
     position:'',
     optical:'',
-    connector:''
+    connector:'',
+    message:''
   },
 
   /**
@@ -31,7 +32,8 @@ Page({
       company:c.company,
       position:c.position,
       optical:c.optical,
-      connector:c.connector
+      connector:c.connector,
+      message:c.message
     })
     wx.setNavigationBarTitle({
       title: this.data._t['标识']
@@ -54,7 +56,8 @@ Page({
       company:this.data.company,
       position:this.data.position,
       optical:this.data.optical,
-      connector:this.data.connector
+      connector:this.data.connector,
+      message:this.data.message
     }
   }
 })

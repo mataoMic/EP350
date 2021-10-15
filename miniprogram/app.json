@@ -9,7 +9,6 @@
     "pages/logs/index",
     "pages/bels/index",
     "pages/autoMeasure/index",
-    "pages/bleTest/index",
     "pages/testConfigureDetail/index"
   ],
   "window": {

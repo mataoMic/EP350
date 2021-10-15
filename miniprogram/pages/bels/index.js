@@ -169,7 +169,7 @@ Page({
     })
   },
   //连接蓝牙按钮
-  connect(event){
+  connect(event) {
     var that = this;
     Toast.loading({
       message: '连接中...',
@@ -187,6 +187,17 @@ Page({
       return that.acceptMessage()
     })
   },
+  disconnect(e) {
+    const ds = e.currentTarget.dataset
+    const deviceId = ds.deviceId
+    console.log(deviceId + '断开连接')
+    wx.closeBLEConnection({
+      deviceId,
+      success (res) {
+        console.log(res)
+      }
+    })
+  },
   async connectDevice(e) {
     const ds = e.currentTarget.dataset
     const deviceId = ds.deviceId
@@ -199,240 +210,18 @@ Page({
     })
       .catch(err => console.error(err));
   },
-  BELConnect(event) {
-    var that = this;
-    var deviceIndex = event.currentTarget.dataset.index
-    return new Promise((s,e)=>{
-      wx.createBLEConnection({
-        deviceId: event.currentTarget.id,
-        success: function (res) {
-          console.log('调试信息：' + res.errMsg);
-          console.log(event.currentTarget.dataset.index)
-          that.setData({
-            connectedDeviceId: event.currentTarget.id,
-            info: "MAC地址：" + event.currentTarget.id + '  调试信息：' + res.errMsg,
-            ['devices['+deviceIndex+'].isConnect']: true
-          })
-          Toast.success({message: '连接成功' });
-          s();
-        },
-        fail: function () {
-          Toast.fail({message: '连接失败' });
-          e()
-        },
-      })
-    })
-  },
-  stopSearch(event) {
-    var that = this;
-    return new Promise((s,e)=>{
-      wx.stopBluetoothDevicesDiscovery({
-        success: function (res) {
-          console.log("停止搜索" + JSON.stringify(res.errMsg));
-          that.setData({
-            info: "停止搜索" + JSON.stringify(res.errMsg),
-          })
-          s()
-        },
-        fail(){
-          e()
-        }
-      })
-    })
-  },
-  getServices(event) {
-    var that = this;
-    return new Promise((s,e)=>{
-      wx.getBLEDeviceServices({
-        // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
-        deviceId: that.data.connectedDeviceId,
-        success: function (res) {
-          console.log('services UUID:\n', JSON.stringify(res.services));
-          for (var i = 0; i < res.services.length; i++) {
-            console.log("第" + (i + 1) + "个UUID:" + res.services[i].uuid + "\n")
-          }
-          that.setData({
-            services: res.services,
-            info: JSON.stringify(res.services),
-          })
-          s()
-        },fail(){
-          e()
-        }
-      })
-    })
-  },
-  getCharacteristics(event) {
-    var that = this;
-    // var myUUID = that.data.servicesUUID;//具有写、通知属性的服务uuid
-    var myUUID = that.data.services[0].uuid
-    console.log('UUID' + myUUID)
-    console.log('id' + that.data.connectedDeviceId)
-    return new Promise((s,e)=>{
-      wx.getBLEDeviceCharacteristics({
-        // 这里的 deviceId 需要在上面的接口中获取
-        deviceId: that.data.connectedDeviceId,
-        // 这里的 serviceId 需要在上面的 接口中获取
-        serviceId: myUUID,
-        success: function (res) {
-          console.log(res)
-          console.log("%c getBLEDeviceCharacteristics", "color:red;");
-          for (var i = 0; i < res.characteristics.length; i++) {
-            console.log('特征值：' + res.characteristics[i].uuid)
-  
-            if (res.characteristics[i].properties.notify) {
-              console.log("notifyServicweId：", myUUID);
-              console.log("notifyCharacteristicsId：", res.characteristics[i].uuid);
-              that.setData({
-                notifyServicweId: myUUID,
-                // notifyCharacteristicsId: "0000ff01-0000-1000-8000-00805f9b34fb",//手动设置notifyCharacteristicsId为这个UUID，为了方便写死在这里
-                notifyCharacteristicsId: res.characteristics[i].uuid
-              })
-              app.globalData.notifyCharacteristicsId = res.characteristics[i].uuid
-            }
-            if (res.characteristics[i].properties.write) {
-              console.log("writeServicweId：", myUUID);
-              console.log("writeCharacteristicsId：", res.characteristics[i].uuid);
-              that.setData({
-                writeServicweId: myUUID,
-                writeCharacteristicsId:res.characteristics[i].uuid,
-              })
-            }
-          }
-          console.log('device getBLEDeviceCharacteristics:', res.characteristics);
-  
-          that.setData({
-            msg: JSON.stringify(res.characteristics),
-          })
-          s()
-        },
-        fail: function (res) {
-          console.log(res);
-          e()
-        },
-      })
-    })
-  },
-  listenNotify(event) {
-    var that = this;
-    // var notifyServicweId = that.data.servicesUUID;  //具有写、通知属性的服务uuid
-    var notifyServicweId = that.data.services[0].uuid; //具有写、通知属性的服务uuid
-    var notifyCharacteristicsId = that.data.notifyCharacteristicsId;
-    console.log("启用notify的serviceId", notifyServicweId);
-    console.log("启用notify的notifyCharacteristicsId", notifyCharacteristicsId);
-    return new Promise((s,e)=>{
-      wx.notifyBLECharacteristicValueChange({
-        state: true, // 启用 notify 功能
-        deviceId: that.data.connectedDeviceId,
-        // 这里的 serviceId 就是that.data.servicesUUID
-        serviceId: notifyServicweId,
-  
-        characteristicId: that.data.notifyCharacteristicsId,
-        success: function (res) {
-          console.log('notifyBLECharacteristicValueChange success', res.errMsg)
-          var msg = '启动notify:' + res.errMsg
-          that.setData({
-            info: msg
-          })
-          s()
-        },
-        fail: function (res) {
-          console.log('启动notify:' + res.errMsg);
-          e()
-        },
-      })
-    })
-  },
-  acceptMessage(event) {
-    var that = this;
-    app.globalData.deviceId = that.data.connectedDeviceId
-    app.globalData.serviceId = that.data.services[0].uuid
-    app.globalData.characteristicId = that.data.writeCharacteristicsId
-    console.log("开始接收数据");
-    wx.onBLECharacteristicValueChange(function (res) {
-      // console.log("characteristicId：" + res.characteristicId)
-      // console.log("serviceId:" + res.serviceId)
-      // console.log("deviceId" + res.deviceId)
-      // console.log("Length:" + res.value.byteLength)
-      console.log("hexvalue:" + app.ab2hex(res.value))
-      app.ab2str(res.value)
-      // that.setData({
-      //   info: that.data.info + ab2hex(res.value)
-      // })
-    })
-  },
-  sendMessage(event) {
-    var that = this
-    var hex = that.data.sendmsg //要发送的信息
-    console.log('要发送的信息是：' + hex)
-    console.log( 'deviceId: '+ that.data.connectedDeviceId)
-    console.log('serviceId:'+ that.data.services[0].uuid)
-    console.log('characteristicId:'+ that.data.writeCharacteristicsId)
-    // var typedArray = new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
-    //   return parseInt(h, 16)
-    // }))
-    // console.log(typedArray)
-    var ab = app.str2ab(hex+'\r\n');
-    console.log(ab)
-    // var ab = app.str2ab("COMMon:DCDEVice:GetThreshold"+'\n')
-    wx.writeBLECharacteristicValue({
-      deviceId: that.data.connectedDeviceId,
-      serviceId: that.data.services[0].uuid,
-      characteristicId: that.data.writeCharacteristicsId,
-      // 这里的value是ArrayBuffer类型
-      value: ab,
-      success: function (res) {
-        console.log('写入成功', res.errMsg)
-      },
-      fail(res) {
-        console.log('写入失败', res.errMsg)
-      }
-    })
-  },
-  //获取输入框的数据
-  getmsg(event) {
-    this.setData({
-      sendmsg: event.detail.value
-    })
-  },
-  showPopup() {
-    this.setData({ show: true });
-  },
-
-  onClose() {
-    this.setData({ show: false });
-  },
-  // 微信官方给的ArrayBuffer转16进度字符串示例
- ab2hex(buffer) {
-  var hexArr = Array.prototype.map.call(
-    new Uint8Array(buffer),
-    function (bit) {
-      return ('00' + bit.toString(16)).slice(-2)
-    }
-  )
-  return hexArr.join(',');
-},
-// ArrayBuffer转为字符串，参数为ArrayBuffer对象
-ab2str(buf) {
-  console.log(buf)
-  let unit8Arr = new Uint8Array(buf);
-  let encodedString = String.fromCharCode.apply(null, unit8Arr),
-    decodedString = decodeURIComponent(escape((encodedString))); //没有这一步中文会乱码
-    console.log(encodedString,decodedString)
-},
-// 字符串转为ArrayBuffer，参数为字符串对象
-str2ab(str) {
-  var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
-  var bufView = new Uint16Array(buf);
-  for (var i = 0, strLen = str.length; i < strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
-  }
-  return buf;
-}, 
   /**
    * 生命周期函数--监听页面加载
    */
 async onLoad() {
+  bluetoothService.getConnectedDevice().then(res => {
+    if (res.devices) {
+      res.devices[0].isConnect = true
+      this.setData({
+        devices:res.devices
+      })
+    }
+  })
     this.setData({
       _t: app.globalData.base._t(), //翻译
     });
@@ -465,7 +254,18 @@ async onLoad() {
   bluetoothConnectStateChange(res) {
     console.log(res);
     app.globalData.connected = res.connected
-    Notify({ type: 'primary', message: res.deviceId + res.connected?'conneed':'break' });
+    if(res.connected){
+      Notify({ type: 'primary', message: 'conneed' });
+    }else {
+      let _devices = this.data.devices.filter((item,index,arr)=>{
+        return item.isConnect = false
+      })
+      this.setData({
+        devices:_devices
+      })
+      Notify({ type: 'danger', message:'break' });
+    }
+    
   },
   bluetoothNewData(res) {
     console.log(res);

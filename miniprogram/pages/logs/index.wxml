@@ -1,4 +1,5 @@
 <!--logs.wxml-->
+<van-toast id="van-toast" />
 <van-cell class="value-class" center>
   <view slot="icon">
     <van-circle

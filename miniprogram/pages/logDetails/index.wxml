@@ -5,7 +5,7 @@
       <view class="van-cell-text">{{ _t['信息'] }} {{ time }}</view>
     </view>
   <view slot="">
-    <van-icon size="100" name="photo-o" bindtap="openImg"/>
+    <van-icon size="50" name="photo-o" bindtap="openImg"/>
   </view>
 </van-cell>
   <van-cell title="{{ _t['综合状态'] }}">
