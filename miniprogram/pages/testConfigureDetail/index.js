@@ -80,10 +80,6 @@ Page({
     return (typeof value === 'number' && !isNaN(value))
   },
   async setVal(){
-    if (!this.data.canSet) {
-      Notify({ type: 'danger', message:'must number!' });
-      return false
-    }
     let res = await this.JudgeNumber(this.data.servicesData,this)
    if (!res) {
      return false
@@ -107,6 +103,10 @@ Page({
   },
   JudgeNumber(data,that){
     let result = true
+    if (!this.data.canSet) {
+      Notify({ type: 'danger', message:that.data._t['必须是数字'] });
+      result = false
+    }
     Object.keys(data).forEach(function(key){
       if (data[key][0] < data[key][1] || data[key][2] < data[key] [3]) {
         Notify({ type: 'danger', message:that.data._t['最小值不得大于最大值'] });
