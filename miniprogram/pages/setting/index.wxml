@@ -31,8 +31,8 @@
       </van-radio-group>
     </view>
   </van-cell>
-  <van-cell data-id="time" title="{{ _t['设置时间'] }}" title-width="70" value="{{time}}" is-link bind:click="showPopup" />
-  <van-cell title="{{ _t['版本信息'] }}" title-width="70" value="{{vInfo}}" />
+  <van-cell data-id="time" title="{{ _t['设置时间'] }}" title-width="120" value="{{time}}" is-link bind:click="showPopup" />
+  <van-cell title="{{ _t['版本信息'] }}" title-width="100" value="{{vInfo}}" />
 </view>
 <van-popup class="overlay80vh" show="{{ show }}" bind:close="onClose" position="bottom">
   <van-datetime-picker

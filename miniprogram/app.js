@@ -21,6 +21,7 @@ App({
     this.globalData._t = this.globalData.base._t()
   },
   globalData: {
+    version:'V1.0.2',
     logs:[],
     connected:false,
     userInfo: null,
@@ -49,9 +50,7 @@ App({
       //目的页面地址
       url: `../${toUrl}/index`,
       success: function(res){
-        console.log(res)
       },fail(e){
-        console.log(e)
       }
   })
   },

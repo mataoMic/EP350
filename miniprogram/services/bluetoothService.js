@@ -144,17 +144,10 @@ class BluetoothService extends EventEmitter {
       }
 
       const { characteristics } = await wx.getBLEDeviceCharacteristics({ deviceId, serviceId });
-      console.log('characteristics', characteristics);
-      // const readable = characteristics.find(c => c.properties.read);
       const writable = characteristics.find(c => c.properties.write);
       const notifiable = characteristics.find(c => c.properties.notify || c.properties.indicate);
 
       if (notifiable) { 
-        // await wx.readBLECharacteristicValue({
-        //   deviceId,
-        //   serviceId,
-        //   characteristicId: notifiable.uuid,
-        // });
         await wx.notifyBLECharacteristicValueChange({
           deviceId,
           serviceId,
@@ -164,11 +157,8 @@ class BluetoothService extends EventEmitter {
       }
 
       if (!this.isReadAttached) {
-        console.log('attach notify callback');
         wx.onBLECharacteristicValueChange(({ characteristicId, value }) => {
-          console.log('new message', characteristicId, value);
           const v = ab2str(value);
-          console.log('new message decoded', characteristicId, v);
           this.emit(BLUETOOTH_EVENT.DATA_RECEIVED, v);
         });
         this.isReadAttached = true;
@@ -177,7 +167,6 @@ class BluetoothService extends EventEmitter {
       if (!this.isConnectStateChangeAttached) {
         wx.onBLEConnectionStateChange((res) => {
           this.emit(BLUETOOTH_EVENT.CONNECT_STATE_CHANGE, res);
-          console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
           app.globalData.connected = res.connected
         });
         this.isConnectStateChangeAttached = true;
@@ -207,7 +196,6 @@ class BluetoothService extends EventEmitter {
       Toast.fail('请连接设备！');
     }
     if (!loop) {
-      console.log('最后'+value)
       value = value + '\n'
     }
     if (this.writable) {
@@ -228,7 +216,6 @@ function str2ab(str) {
   for (var i = 0, strLen = str.length; i < strLen; i++) {
     bufView[i] = str.charCodeAt(i);
   }
-  console.log(buf)
   return buf;
 };
 

@@ -45,11 +45,9 @@ Page({
     bluetoothService.writeValue('COMMon:DCDEVice:GetSetting')
     .then(res => {
       // 这是成功
-      console.log(res);
     })
     .catch((e)=>{
       // 这是失败
-      console.error(e)
     })
   },
   onUnload() {
@@ -74,7 +72,7 @@ Page({
       vfl:json.VFL_flag == 1,
       time:json.current_time,
       autoOff:json.AutoOff_flag + '',
-      vInfo:`${this.data._t['硬件版本']}:${json.Hardware} ${this.data._t['软件版本']}:${json.Software}`
+      vInfo:`${this.data._t['硬件版本']}:${json.Hardware}${this.data._t['软件版本']}:${json.Software} ${this.data._t['小程序版本']}:${app.globalData.version}`
     })
     bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.changeValue);
   },
@@ -82,10 +80,11 @@ Page({
     if (res.slice(res.length-3,res.length-2) == 1) {
       this.setData({ [this.data.currentValue.currentTarget.dataset.id]: this.data.currentValue.detail });
     }
+    bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.changeValue);
   },
   onChange(e) {
-    console.log('COMMon:DCDEVice:' + this.data.commons[e.currentTarget.dataset.id] + '='  + (e.detail?1:0))
     this.setData({currentValue:e})
+    bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.changeValue);
     if (e.currentTarget.dataset.id !== 'autoOff') {
       bluetoothService.writeValue('COMMon:DCDEVice:' + this.data.commons[e.currentTarget.dataset.id] + '=' + (e.detail?1:0))
     } else {

@@ -50,11 +50,9 @@ Page({
         wx.openDocument({
           filePath: res.filePath,
           success: function (res) {
-            console.log('打开文档成功')
           }
         })
       },fail: function(res){
-        console.log(res)
       }
     })
   },
@@ -64,8 +62,6 @@ Page({
       title: '简直走别拐弯', // 转发后 所显示的title
       path: '/pages/index/index', // 相对的路径
       success: (res)=>{    // 成功后要做的事情
-        // console.log
-       
         wx.getShareInfo({
           shareTicket: res.shareTickets[0],
           success: (res)=> { 
@@ -73,13 +69,12 @@ Page({
               isShow:true
             }) 
            },
-          fail: function (res) { console.log(res) },
-          complete: function (res) { console.log(res) }
+          fail: function (res) { },
+          complete: function (res) { }
         })
       },
       fail: function (res) {
         // 分享失败
-        console.log(res)
       }
     }
   },
@@ -98,14 +93,6 @@ Page({
       this.setData({
         systemInfo:res.platform
       })
-      console.log(res.model)
-      console.log(res.pixelRatio)
-      console.log(res.windowWidth)
-      console.log(res.windowHeight)
-      console.log(res.language)
-      console.log(res.version)
-      console.log(res.platform)
-      console.log(res.environment)
     } catch (e) {
       // Do something when catch error
     }
@@ -114,11 +101,9 @@ Page({
     this.setData({
       connected : app.globalData.connected
     })
-    console.log(app.globalData.connected)
   },
   onLoad: function () {
     // 登录页面切换中英文需要
-    console.log(app.globalData.connected)
     bluetoothService.on(BLUETOOTH_EVENT.CONNECT_STATE_CHANGE, this.bluetoothConnectStateChange);
     this.language = app.globalData.language
     if (app.globalData.base.getLanguage() == 'zh_CN') {
@@ -142,10 +127,8 @@ Page({
   },
   switchLanguage: function() {
     if (app.globalData.base.getLanguage() == 'zh_CN'){
-      console.log('切换至英文');
       wx.setStorageSync('Language', 'en'); // 利用本地缓存存放用户中英文选项
     }else{
-      console.log('切换至中文');
       wx.setStorageSync('Language', 'zh_CN');
     };
     wx.navigateTo({

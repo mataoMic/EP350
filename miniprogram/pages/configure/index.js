@@ -23,7 +23,6 @@ Page({
     this.setData({
       _t: app.globalData.base._t(), //翻译
     });
-    console.log(app.globalData.configure)
     let c = app.globalData.configure
     this.setData({
       task:c.task,

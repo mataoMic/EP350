@@ -7,7 +7,7 @@ Page({
   data: {
     res:'',
     logs: [],
-    passNum:5,
+    passNum:0,
     noState:0
   },
   checkDetails(e){
@@ -15,21 +15,11 @@ Page({
       //目的页面地址
       url: `../logDetails/index?index=${e.currentTarget.dataset.index}`,
       success: function(res){
-        console.log(res)
       },fail(e){
-        console.log(e)
       }
   })
   },
-  // onShow(){
-  //   console.log('show')
-  //   let a = this.getInfo()
-  // },
 onLoad() {
-    // wx.onBLECharacteristicValueChange(function (characteristic) {
-    //   console.log('characteristic value comed:', characteristic)
-    // })
-    // app.sendMsg('123')
     this.setData({
       _t: app.globalData.base._t(), //翻译
     });
@@ -41,12 +31,11 @@ onLoad() {
 
     bluetoothService.writeValue('COMMon:DCDEVice:GetFiles?')
     .then(res => {
+      console.log(res)
       // 这是成功
-      console.log('写入成功',res);
     })
     .catch((e)=>{
       // 这是失败
-      console.error(e)
     })
   },
   onUnload() {
@@ -63,19 +52,18 @@ onLoad() {
     if (res[res.length-1] ==  '\n') {
       this.showDate(this.data.res)
     }
-    console.log('new message', res);
   },
   showDate(data){
     let str = data.slice(data.indexOf(':[{') + 1,data.length-2)
-    console.log(str)
-    console.log(str.slice(1010,data.length-2))
     let json = JSON.parse(str);
+    console.log(json)
+    json.map((item)=>{
+      item.service_flag == 0?this.setData({passNum:this.data.passNum++}):false
+    })
     this.setData({logs:json})
     app.globalData.logs = json
-    console.log(json)
   },
   async getInfo(){
     let a = await wxPromise.app.characteristicValue('123')
-    console.log(a);
   }
 })

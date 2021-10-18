@@ -28,14 +28,11 @@ Component({
    */
   methods: {
     checkDetails(e){
-      console.log(e.currentTarget.dataset.index)
       wx.navigateTo({
         //目的页面地址
         url: `../testConfigureDetail/index?index=${e.currentTarget.dataset.index}`,
         success: function(res){
-          console.log(res)
         },fail(e){
-          console.log(e)
         }
     })
     },

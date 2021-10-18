@@ -52,14 +52,6 @@ Page({
       this.setData({
         systemInfo:res.platform
       })
-      console.log(res.model)
-      console.log(res.pixelRatio)
-      console.log(res.windowWidth)
-      console.log(res.windowHeight)
-      console.log(res.language)
-      console.log(res.version)
-      console.log(res.platform)
-      console.log(res.environment)
     } catch (e) {
       // Do something when catch error
     }
@@ -82,7 +74,6 @@ Page({
       wx.openBluetoothAdapter({
         success: function (res) {
           that.setData({ noticeMsg:'搜索蓝牙设备...',show: true });
-          console.log('初始化蓝牙适配器成功')
           //页面日志显示
           that.setData({
             info: '初始化蓝牙适配器成功'
@@ -91,7 +82,6 @@ Page({
           s()
         },
         fail: function (res) {
-          console.log('请打开蓝牙和定位功能')
           Notify({ type: 'warning', message: '请打开蓝牙和定位功能' });
           e()
         }
@@ -104,7 +94,6 @@ Page({
       wx.getBluetoothAdapterState({
         success: function (res) {
           //打印相关信息
-          console.log(JSON.stringify(res.errMsg) + "\n蓝牙是否可用：" + res.available);
           that.setData({
             info: JSON.stringify(res.errMsg) + "\n蓝牙是否可用：" + res.available
           })
@@ -112,7 +101,6 @@ Page({
         },
         fail: function (res) {
           //打印相关信息
-          console.log(JSON.stringify(res.errMsg) + "\n蓝牙是否可用：" + res.available);
           that.setData({
             info: JSON.stringify(res.errMsg) + "\n蓝牙是否可用：" + res.available
           })
@@ -131,13 +119,9 @@ Page({
           that.setData({
             info: "搜索设备" + JSON.stringify(res),
           })
-          console.log('搜索设备返回' + JSON.stringify(res))
           s()
         }
       })
-      // wx.onBluetoothDeviceFound(function(res){
-      //   console.log('搜索设备返回' + JSON.stringify(res))
-      // })
     })
   },
   getDeviceInfo(event) {
@@ -148,7 +132,6 @@ Page({
     return new Promise((s, e) => {
       wx.getBluetoothDevices({
         success: function (res) {
-          console.log(res)
           // let filterStr = that.data.systemInfo == 'android'?'E3:C0:D2:4F:63:D5':'11161D35'
           let filterStr = 'EP350'
           let newArr = res.devices.filter((item, index, arr) => {
@@ -190,11 +173,9 @@ Page({
   disconnect(e) {
     const ds = e.currentTarget.dataset
     const deviceId = ds.deviceId
-    console.log(deviceId + '断开连接')
     wx.closeBLEConnection({
       deviceId,
       success (res) {
-        console.log(res)
       }
     })
   },
@@ -248,11 +229,9 @@ async onLoad() {
       item.isConnect = bluetoothService.connectedDevice.deviceId == item.deviceId?true:false
       return item.name.indexOf(filterStr) >= 0
     });
-    console.log(res);
     this.setData({ devices: newArr });
   },
   bluetoothConnectStateChange(res) {
-    console.log(res);
     app.globalData.connected = res.connected
     if(res.connected){
       Notify({ type: 'primary', message: 'conneed' });
@@ -268,6 +247,5 @@ async onLoad() {
     
   },
   bluetoothNewData(res) {
-    console.log(res);
   }
 })

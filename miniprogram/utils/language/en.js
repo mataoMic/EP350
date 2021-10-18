@@ -76,7 +76,11 @@ const languageMap = {
   '取消':'cancel',
   '版本信息':'version-info',
   '硬件版本':'Hardware',
-  '软件版本':'Software'
+  '软件版本':'Software',
+  '小程序版本':'Applet',
+  '必须是数字':'must number',
+  '阈值需在-50到26之间':'needs to be between - 50 and 26',
+  '最小值不得大于最大值':'minimum must not be greater than maximum'
 }
 module.exports = {
   languageMap : languageMap

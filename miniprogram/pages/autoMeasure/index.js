@@ -30,7 +30,6 @@ Page({
   },
   onUnload: function () {
     this.stopMeasure().then(res=>{
-      console.log(res)
     }); 
     bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
     bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceiveData);
@@ -41,7 +40,6 @@ Page({
     })
     bluetoothService.writeValue('COMMon:DCDEVice:StartRealTimeMeasure')
     .then(res => {
-      console.log(res);
     })
     .catch((e)=>{
       console.error(e)
@@ -68,7 +66,6 @@ Page({
     return bluetoothService.writeValue('COMMon:DCDEVice:StopRealTimeMeasure')
   },
   onReceive(res){
-    console.log(res) 
     if (res.indexOf('StartRealTimeMeasure:1') > 0) {
       this.setData({ 
         starting:true,
@@ -77,22 +74,12 @@ Page({
       bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
       bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceiveData);
     }
-    // bluetoothService.off(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
-    // bluetoothService.on(BLUETOOTH_EVENT.DATA_RECEIVED, this.onReceive);
-    // bluetoothService.writeValue('COMMon:DCDEVice:GetRealTimeResult?')
-    // .then(res => {
-    //   console.log(res);
-    // })
-    // .catch((e)=>{
-    //   console.error(e)
-    // })
   },
   update(data,that) {
     that.setData({
       services:[]
     })
     let str = data.slice(data.indexOf(':{') + 1,data.length-2)
-    console.log(str)
     let json = JSON.parse(str);
     for (let i = 0; i < json.service_num; i++) {
       let obj = {up:{data:'',type:'',max:'',min:''},down:{data:'',type:'',max:'',min:''}}
@@ -107,7 +94,6 @@ Page({
         services:arr
       })
     }
-    console.log(that.data.services)
     that.setData({res:''})
   },
   onReceiveData(res){

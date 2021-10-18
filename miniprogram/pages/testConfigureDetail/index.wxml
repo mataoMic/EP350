@@ -14,15 +14,15 @@
     </view>
   </van-cell>
 <van-cell-group wx:for="{{serviceChoiceList}}" wx:key="i">
-  <van-divider contentPosition="left">{{serviceName[item]}}</van-divider>
+  <van-divider contentPosition="left">{{serviceName[index]}}</van-divider>
   <van-cell title="{{ _t['上行功率'] }}（dBm）" >
     <view sort="value">
       <van-row>
         <van-col span="12">
-          <input type="number" data-name="1" value="{{servicesData['Service' + item][1]}}" bindinput="bindInput"/>
+          <input type="number" data-type="{{index}}" data-name="1" value="{{servicesData['Service' + index][1]}}" bindinput="bindInput"/>
         </van-col>
         <van-col span="12">
-          <input type="number" data-name="0" value="{{servicesData['Service' + item][0]}}" bindinput="bindInput"/>
+          <input type="number" data-type="{{index}}" data-name="0" value="{{servicesData['Service' + index][0]}}" bindinput="bindInput"/>
         </van-col>
       </van-row>
     </view>
@@ -31,10 +31,10 @@
     <view sort="value">
       <van-row>
         <van-col span="12">
-          <input type="number" data-name="3" value="{{servicesData['Service' + item][3]}}" bindinput="bindInput"/>
+          <input type="number" data-type="{{index}}" data-name="3" value="{{servicesData['Service' + index][3]}}" bindinput="bindInput"/>
         </van-col>
         <van-col span="12">
-          <input type="number" data-name="2" value="{{servicesData['Service' + item][2]}}" bindinput="bindInput"/>
+          <input type="number" data-type="{{index}}" data-name="2" value="{{servicesData['Service' + index][2]}}" bindinput="bindInput"/>
         </van-col>
       </van-row>
     </view>

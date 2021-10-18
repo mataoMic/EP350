@@ -31,7 +31,6 @@ Page({
     wx.setNavigationBarTitle({
       title: this.data._t['输出报告']
     })
-    console.log(app.globalData.logDetail)
     this.setData({
       resList:app.globalData.logDetail
     })
@@ -57,9 +56,7 @@ Page({
     var windowH = that.data.windowH
     // 使用 wx.createContext 获取绘图上下文 context
     var context = wx.createCanvasContext('firstCanvas')
-    console.log(context)
     // 标题
-    console.log(this.data)
     context.setFontSize(18)
     context.fillText('PON' + this.data._t['功率计报告'], 10, 20)
     // 是否通过
@@ -222,7 +219,6 @@ Page({
               if (res.confirm) {
                 that.eventSave()
               } else if (res.cancel) {
-                console.log('用户点击取消')
               }
             }
           })
